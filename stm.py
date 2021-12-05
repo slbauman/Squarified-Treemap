@@ -119,6 +119,7 @@ def display_squarified_treemap(stdscr, items, names):
 
 
 def main(stdscr):
+    global term_size_x, term_size_y
     curses.use_default_colors()
     get_term_size(stdscr)
     stdscr.clear()
@@ -130,6 +131,13 @@ def main(stdscr):
             if (int(item) > 0):
                 items.append(int(item))
                 names.append(str(name))
+        if items:
+            char_size = sum(items) / (term_size_x * term_size_y)
+            for i in range(len(items)):
+                if items[i] < (char_size * 4):
+                    items[i], names[i] = sum(items[i:]), "s"
+                    items = items[:i+1]
+                    break
     else:
         items = [6, 6, 4, 3, 2, 2, 1]
         names = ["six_1","six_2","four","three","two_1","two_2","one"]
